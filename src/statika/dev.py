@@ -42,7 +42,7 @@ def start_watcher(watched_dir, build_func=None, logger=None,
 
 if __name__ == '__main__':
     if len(argv) > 1 and path.isdir(argv[1]):
-        watcher_dir = argv[1]
+        watched_dir = argv[1]
     else:
         watched_dir = getcwd()
     start_watcher(watched_dir)
