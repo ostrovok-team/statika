@@ -19,7 +19,7 @@ def start_watcher(watched_dir, build_func=None, logger=None,
         if not event.name or event.name[0] in ('.', '_'):
             return
         ext = path.splitext(event.name)[1]
-        if ext not in ('.js', '.css', '.html'):
+        if ext not in file_types:
             return
         logger.debug(' - %s is modified, rebuild static' % event.pathname)
         build_func()
