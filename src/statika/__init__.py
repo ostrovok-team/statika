@@ -11,6 +11,7 @@ class BuildError(Exception):
 
 class MediaBundle(object):
     INCLUDE_SEP = {'=', '(', '"', "'"}
+    _current_path = None  # Dirname of file which is processing at the moment.
 
     def __init__(self, file_path):
         self.file_path = file_path
@@ -43,6 +44,8 @@ class MediaBundle(object):
             )
 
         res = ''
+        old_path = self._current_path
+        self._current_path = path.dirname(file_path)
         with open(file_path, 'rb') as src:
             line_no = 1
             for line in src.readlines():
@@ -78,6 +81,7 @@ class MediaBundle(object):
                         break
                 res += line
                 line_no += 1
+        self._current_path = old_path
         return res
 
     @staticmethod
@@ -109,7 +113,7 @@ def handler_include(bundle, instruction, args):
     :raise exception: BuildError
     """
     try:
-        inc_file = path.join(bundle.root_dir, args[0])
+        inc_file = path.join(bundle._current_path, args[0])
     except IndexError:
         raise BuildError(
             'File name must be specified by the first argument of %s' % \
@@ -125,6 +129,13 @@ DEFAULT_RULES = [
 
 
 def build(bundles, rules=None):
+    """
+    Builds list of "bundles" sequentially according with "rules".
+    Bundles should be a list of a full path to JS or CSS files with includes.
+    By default rules are (if no rules were passed):
+      - include('b-test/b-test.js') for JavaScript;
+      - @import 'b/test/b-test.css' for CSS.
+    """
     if rules is None:
         rules = DEFAULT_RULES
     for bundle_file in bundles:
