@@ -73,7 +73,7 @@ class MediaBundle(object):
                                 self, rule['instruction'], args
                             )
                         except BuildError as e:
-                            logger.warning(
+                            logger.error(
                                 str(e) + ' in %s on line %s' % (
                                     self.file_path, line_no
                                 )

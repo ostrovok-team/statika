@@ -15,7 +15,7 @@ def start_watcher(watched_dir, bundles, build_func=None, logger=None,
     if logger is None:
         logger = getLogger(__name__)
 
-    def _build(build_func, event):
+    def _build(event):
         if not event.name or event.name[0] in ('.', '_'):
             return
         ext = path.splitext(event.name)[1]
@@ -27,7 +27,7 @@ def start_watcher(watched_dir, bundles, build_func=None, logger=None,
     def builder_process():
         logger.debug(' - Watched static files for changes to rebuild')
         wm = WatchManager()
-        notifier = Notifier(wm, default_proc_fun=_build(build_func, logger))
+        notifier = Notifier(wm, default_proc_fun=_build)
         wm.add_watch(
             watched_dir,
             IN_MODIFY, # | IN_CREATE | IN_DELETE,
