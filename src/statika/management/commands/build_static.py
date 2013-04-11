@@ -9,8 +9,4 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         getLogger('statika').addHandler(StreamHandler())
-        bundles = [
-            settings.MEDIA_ROOT + '/js/bakkota.js',
-            settings.MEDIA_ROOT + '/css/bakkota.css',
-        ]
-        build(bundles)
+        build(settings.STATIKA_BUNDLES)
