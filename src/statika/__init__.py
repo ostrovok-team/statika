@@ -124,6 +124,7 @@ def handler_include(bundle, instruction, args):
 
 DEFAULT_RULES = [
     {'type': 'js', 'instruction': 'include', 'handler': handler_include},
+    {'type': 'js', 'instruction': 'require', 'handler': handler_include},
     {'type': 'css', 'instruction': '@import', 'handler': handler_include},
 ]
 
