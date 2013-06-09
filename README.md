@@ -1,7 +1,7 @@
 # Statika
 
-Primitive and fast builder of static blocks (js and css) into the bundles.
-Works with Django.
+Primitive and fast builder of static blocks (js and css) into the bundles for projects written in Python.
+Tested with Django and Werkzeug.
 
 ## Basic usage
 
@@ -15,24 +15,24 @@ media/js/project.js:
     require('jquery.js');
     require('blocks/b-form/b-form.js');
 
-Usage:
+And following code creates media/css/_project.css and media/css/_project.js bundles:
 
     from statika import build
 
     build(('media/css/project.css', 'media/css/project.js'))
 
-You can also write includes in included files. E.g., in media/js/blocks/b-form.js:
+You can also use includes in included files. E.g., in media/js/blocks/b-form.js:
 
     require('blocks/i-loader/i-loader.js');
 
-## Advanced usage
+## Writing custom handlers
 
-TODO
+TODO:
 
 ## Using watcher
 
-TODO
+TODO:
 
-## To do:
+## Django command "build_static"
 
-  * Using watcher in django
+TODO:
