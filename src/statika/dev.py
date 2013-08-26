@@ -2,7 +2,6 @@ from logging import getLogger
 from multiprocessing import Process
 from os import path, getcwd
 from sys import argv
-import time
 from watchdog.events import PatternMatchingEventHandler
 from watchdog.observers import Observer
 
