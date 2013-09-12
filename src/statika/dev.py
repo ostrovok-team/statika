@@ -2,6 +2,7 @@ from logging import getLogger
 from multiprocessing import Process
 from os import path, getcwd
 from sys import argv
+import time
 from watchdog.events import PatternMatchingEventHandler
 from watchdog.observers import Observer
 
@@ -33,10 +34,10 @@ def start_watcher(watched_dir, bundles, build_func=None, logger=None,
         observer.schedule(event_handler, path=watched_dir, recursive=True)
         observer.start()    
         try:
-            observer.join()
+            while True:
+                time.sleep(1)
         except KeyboardInterrupt:
             observer.stop()
-        observer.join()
 
     build_func(bundles)
     _watcher = Process(target=builder_process, name='killa')
