@@ -8,6 +8,7 @@ from watchdog.observers import Observer
 
 from statika import build
 
+
 def start_watcher(watched_dir, bundles, build_func=None, logger=None,
                   file_patterns=['*.css', '*.js', '*.html']):
     if build_func is None:
@@ -32,16 +33,16 @@ def start_watcher(watched_dir, bundles, build_func=None, logger=None,
         event_handler.on_modified = _build
         observer = Observer()
         observer.schedule(event_handler, path=watched_dir, recursive=True)
-        observer.start()    
+        observer.start()
         try:
             while True:
                 time.sleep(1)
         except KeyboardInterrupt:
             observer.stop()
 
-    build_func(bundles)
     _watcher = Process(target=builder_process, name='killa')
     _watcher.start()
+    build_func(bundles)
 
 
 if __name__ == '__main__':
