@@ -1,7 +1,6 @@
 from logging import getLogger
-from multiprocessing import Process
-from os import path, getcwd
-from sys import argv
+from os import path, getcwd, fork
+from sys import argv, exit
 import time
 from watchdog.events import PatternMatchingEventHandler
 from watchdog.observers import Observer
@@ -25,6 +24,7 @@ def start_watcher(watched_dir, bundles, build_func=None, logger=None,
         build_func(bundles)
 
     def builder_process():
+        build_func(bundles)
         logger.debug(' - Watched static files for changes to rebuild')
         event_handler = PatternMatchingEventHandler(
             patterns=file_patterns,
@@ -40,9 +40,9 @@ def start_watcher(watched_dir, bundles, build_func=None, logger=None,
         except KeyboardInterrupt:
             observer.stop()
 
-    _watcher = Process(target=builder_process, name='killa')
-    _watcher.start()
-    build_func(bundles)
+    if fork() == 0:
+        builder_process()
+        exit()
 
 
 if __name__ == '__main__':
